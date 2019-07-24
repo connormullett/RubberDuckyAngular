@@ -17,30 +17,49 @@ export class AuthService {
   userInfo: User;
   isLoggedIn = new Subject<boolean>();
 
+
   constructor(private _http: HttpClient, private _router: Router) { }
+
 
   register(regUserData: RegisterUser) {
     return this._http.post(`${API_URL}/users/`, regUserData);
   }
 
+  
   login(loginUserData: LoginUser) {
     return this._http.post(`${API_URL}/auth/login`, loginUserData).subscribe
     ( (token: Token) => {
       localStorage.setItem('auth_token', token.Authorization);
+      this.getMe();
       this._router.navigate(['/']);
       this.isLoggedIn.next(true);
     });
   }
 
+
   logout() {
     localStorage.clear();
     this.isLoggedIn.next(false);
-    
+
     return this._http.post(`${API_URL}/auth/logout`, { headers: this.setHeaders() });
   }
 
+
   private setHeaders(): HttpHeaders {
-      const authHeader = new HttpHeaders()
-        .set('Authorization', localStorage.getItem('auth_token'));
+    return new HttpHeaders()
+      .set('Authorization', localStorage.getItem('auth_token'));
+  }
+
+
+  getMe() {
+    if(!localStorage.getItem('auth_token')){
+      return;
+    }
+
+    return this._http.get(`${API_URL}/users/me`, { headers: this.setHeaders() })
+      .subscribe( (user: User) => {
+        this.userInfo = user;        
+        console.log(this.userInfo);
+    });
   }
 }
