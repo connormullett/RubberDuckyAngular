@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   login(loginUserData: LoginUser) {
-    return this._http.post(`${API_URL}/auth/login`, LoginUser).subscribe
+    return this._http.post(`${API_URL}/auth/login`, loginUserData).subscribe
     ( (token: Token) => {
       localStorage.setItem('auth_token', token.Authorization);
       this._router.navigate(['/']);
