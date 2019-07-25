@@ -3,6 +3,11 @@
   flex: 1 1 auto;
 }
 
+.brand-name {
+  text-decoration: none;
+  color: white;
+}
+
 .nav-btn {
   margin-right: 0.5em;
   background-color: #132584;

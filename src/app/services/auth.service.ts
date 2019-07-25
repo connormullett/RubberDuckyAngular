@@ -26,13 +26,14 @@ export class AuthService {
 
 
   login(loginUserData: LoginUser) {
+    console.log('api request');
     return this._http.post(`${API_URL}/auth/login`, loginUserData).subscribe
     ( (token: Token) => {
       localStorage.setItem('auth_token', token.Authorization);
       this.getMe();
       this._router.navigate(['/']);
       this.isLoggedIn.next(true);
-    }).unsubscribe();
+    });
   }
 
 
@@ -46,7 +47,7 @@ export class AuthService {
 
   getMe() {
     return this._http.get(`${API_URL}/users/me`, { headers: this.setHeaders() })
-      .subscribe( (user: User) => { this.userInfo.next(user); }).unsubscribe();
+      .subscribe( (user: User) => { this.userInfo.next(user); });
   }
 
 

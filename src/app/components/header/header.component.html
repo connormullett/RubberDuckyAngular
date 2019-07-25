@@ -1,8 +1,13 @@
 <mat-toolbar color="primary">
-  <span>Rubber Ducky</span>
+  <span><a routerLink="/home" class="brand-name">Rubber Ducky</a></span>
   <span class="fill-space"></span>
-  <span class="username">{{ username }}</span>
+  <span class="username">{{ _username }}</span>
   <button routerLink="/register" mat-raised-button class="nav-btn">Register</button>
-  <button routerLink="/login" mat-raised-button class="nav-btn">Login</button>
+  <div *ngIf="!_isLoggedIn; else elseBlock">
+    <button routerLink="/login" mat-raised-button class="nav-btn">Login</button>
+  </div>
+  <ng-template #elseBlock>
+    <button (click)="logout()" mat-raised-button class="nav-btn">logout</button>
+  </ng-template>
 </mat-toolbar>
 

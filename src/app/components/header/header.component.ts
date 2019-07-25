@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
-import { Observable, Subject } from 'rxjs';
 import { User } from '../../models/user';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +10,22 @@ import { User } from '../../models/user';
 })
 export class HeaderComponent implements OnInit {
 
-  username: string;
+
+  private _username: string;
   private _subscription;
+  private _isLoggedIn
 
   constructor(private _service: AuthService) { 
     this._subscription = this._service.userInfo.subscribe( (value) => {
-      this.username = value.username;
+      this._username = value.username;
     });
+    this._isLoggedIn = this._service.isLoggedIn.subscribe( (value) => {
+      this._isLoggedIn = value;
+    });
+  }
+
+  logout() {
+    this._service.logout();
   }
 
   ngOnInit() {
@@ -24,5 +33,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this._subscription.unsubscribe();
+    this._isLoggedIn.unsubscribe();
   }
 }
