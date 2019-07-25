@@ -14,9 +14,8 @@ const API_URL = 'http://localhost:5000/api/v1';
 })
 export class AuthService {
 
-  userInfo: User;
+  userInfo = new Subject<User>();
   isLoggedIn = new Subject<boolean>();
-
 
   constructor(private _http: HttpClient, private _router: Router) { }
 
@@ -25,7 +24,7 @@ export class AuthService {
     return this._http.post(`${API_URL}/users/`, regUserData);
   }
 
-  
+
   login(loginUserData: LoginUser) {
     return this._http.post(`${API_URL}/auth/login`, loginUserData).subscribe
     ( (token: Token) => {
@@ -40,26 +39,19 @@ export class AuthService {
   logout() {
     localStorage.clear();
     this.isLoggedIn.next(false);
-
+    
     return this._http.post(`${API_URL}/auth/logout`, { headers: this.setHeaders() });
   }
 
 
-  private setHeaders(): HttpHeaders {
-    return new HttpHeaders()
-      .set('Authorization', localStorage.getItem('auth_token'));
+  getMe() {
+    return this._http.get(`${API_URL}/users/me`, { headers: this.setHeaders() })
+      .subscribe( (user: User) => { this.userInfo.next(user); })
   }
 
 
-  getMe() {
-    if(!localStorage.getItem('auth_token')){
-      return;
-    }
-
-    return this._http.get(`${API_URL}/users/me`, { headers: this.setHeaders() })
-      .subscribe( (user: User) => {
-        this.userInfo = user;        
-        console.log(this.userInfo);
-    });
+  private setHeaders(): HttpHeaders {
+      return new HttpHeaders()
+        .set('Authorization', localStorage.getItem('auth_token'));
   }
 }

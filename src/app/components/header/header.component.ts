@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service'
+import { Observable, Subject } from 'rxjs';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-header',
@@ -9,12 +10,19 @@ import { AuthService } from '../../services/auth.service'
 })
 export class HeaderComponent implements OnInit {
 
-  private _userData: User;
+  username: string;
+  private _subscription;
 
-  constructor() { }
+  constructor(private _service: AuthService) { 
+    this._subscription = this._service.userInfo.subscribe( (value) => {
+      this.username = value.username;
+    });
+  }
 
   ngOnInit() {
   }
 
-
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
+  }
 }
