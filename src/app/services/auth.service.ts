@@ -32,7 +32,7 @@ export class AuthService {
       this.getMe();
       this._router.navigate(['/']);
       this.isLoggedIn.next(true);
-    });
+    }).unsubscribe();
   }
 
 
@@ -46,7 +46,7 @@ export class AuthService {
 
   getMe() {
     return this._http.get(`${API_URL}/users/me`, { headers: this.setHeaders() })
-      .subscribe( (user: User) => { this.userInfo.next(user); })
+      .subscribe( (user: User) => { this.userInfo.next(user); }).unsubscribe();
   }
 
 

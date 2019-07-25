@@ -15,8 +15,6 @@ export class RegistrationComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {
-  }
 
   createForm() {
     this._registerForm = this._form.group({
@@ -28,9 +26,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    this._service
-      .register(this._registerForm.value)
-      .subscribe( () => this._service.login(this._registerForm.value));
+    this._service.register(this._registerForm.value).subscribe( 
+      () => {
+        this._service.login(this._registerForm.value);
+      }).unsubscribe();
   }
 
+
+  ngOnInit() {
+  }
 }
