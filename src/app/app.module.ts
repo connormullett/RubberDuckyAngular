@@ -16,13 +16,16 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { HomeComponent } from './components/home/home.component';
-import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+
+import { AuthService } from './services/auth.service';
+import { ProfileService } from './services/profile.service';
 
 const routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: '**', component: HomeComponent },
 ];
 
@@ -47,7 +50,7 @@ const routes = [
     RouterModule.forRoot(routes),
     HttpClientModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

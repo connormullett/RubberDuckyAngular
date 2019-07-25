@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-  <span><a routerLink="/home" class="brand-name">Rubber Ducky</a></span>
+  <span><a routerLink="/home" class="nav-link">Rubber Ducky</a></span>
   <span class="fill-space"></span>
-  <span class="username">{{ _username }}</span>
+  <span class="username"><a routerLink="/profile" class="nav-link">{{ _username }}</a></span>
   <button routerLink="/register" mat-raised-button class="nav-btn">Register</button>
   <div *ngIf="!_isLoggedIn; else elseBlock">
     <button routerLink="/login" mat-raised-button class="nav-btn">Login</button>
